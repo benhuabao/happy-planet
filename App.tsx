@@ -3,376 +3,316 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Heart,
     Star,
-    Rocket,
     Camera,
     Gift,
     ChevronDown,
-    Sparkles,
-    Shield,
-    Compass,
-    Cpu,
-    Zap,
-    Globe
+    Smile,
+    Truck,
+    HardHat,
+    Construction,
+    Hammer,
+    MessageCircle,
+    Calendar,
+    Sparkles
 } from 'lucide-react';
 
-// 自定义的 3D 行星场景组件 (整合在单文件中)
-const PlanetScene = () => {
-    return (
-        <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
-            {/* 核心星球 */}
-            <motion.div
-                animate={{
-                    rotate: 360,
-                    scale: [1, 1.05, 1]
-                }}
-                transition={{
-                    rotate: { duration: 100, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 8, repeat: Infinity, ease: "easeInOut" }
-                }}
-                className="relative w-64 h-64 md:w-96 md:h-96 rounded-full bg-gradient-to-br from-cyan-900 via-blue-950 to-black shadow-[0_0_100px_rgba(6,182,212,0.3)] border border-cyan-500/20"
-            >
-                {/* 星球表面纹理效果 */}
-                <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at:30%_30%,rgba(255,255,255,0.2)_0%,transparent_70%)] rounded-full"></div>
+// 自定义挖掘机小图标 (SVG) - 调淡颜色
+const ExcavatorIcon = ({ className }: { className?: string }) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M2 21h20" />
+        <path d="M7 21v-4l-1-1V9l3-2 4 2v7l-1 1v4" />
+        <path d="M13 14h5l2-2v-3l-2-2h-5" />
+        <circle cx="7" cy="18" r="2" />
+        <circle cx="17" cy="18" r="2" />
+    </svg>
+);
 
-                {/* 星环 1 */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[20%] border border-cyan-500/20 rounded-[100%] rotate-[15deg]"></div>
-                {/* 星环 2 */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[15%] border border-blue-500/10 rounded-[100%] rotate-[-10deg]"></div>
-            </motion.div>
+// 气泡悄悄话组件 - 边框更淡，视觉更柔和
+const SpeechBubble = ({ text, position, delay }: any) => (
+    <motion.div
+        initial={{ opacity: 0, scale: 0.5, y: 20 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ type: "spring", damping: 12, delay }}
+        className={`absolute hidden md:flex z-20 ${position} bg-white/90 backdrop-blur-sm px-6 py-3 rounded-[2rem] shadow-sm border border-amber-100 items-center gap-2`}
+    >
+        <MessageCircle className="text-amber-300" size={18} />
+        <span className="font-bold text-amber-900/60 text-sm whitespace-nowrap">{text}</span>
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/90 border-b border-r border-amber-100 rotate-45"></div>
+    </motion.div>
+);
 
-            {/* 背景点阵星星 */}
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-
-            {/* 漂浮的小星星 */}
-            {[...Array(30)].map((_, i) => (
-                <motion.div
-                    key={i}
-                    initial={{
-                        x: Math.random() * 1200 - 600,
-                        y: Math.random() * 1200 - 600,
-                        opacity: Math.random()
-                    }}
-                    animate={{
-                        y: [0, -30, 0],
-                        opacity: [0.2, 1, 0.2]
-                    }}
-                    transition={{
-                        duration: 2 + Math.random() * 3,
-                        repeat: Infinity,
-                        delay: Math.random() * 5
-                    }}
-                    className="absolute w-1 h-1 bg-cyan-400 rounded-full shadow-[0_0_5px_#22d3ee]"
-                />
-            ))}
-        </div>
-    );
-};
-
-// 酷炫的照片视窗组件
-const PhotoWindow = ({ src, caption, index, fallbackUrl }: any) => {
-    const [imgSrc, setImgSrc] = useState(src);
-    const [isError, setIsError] = useState(false);
-
+// 拍立得照片组件 - 贯彻“我要三个”
+const CutePhoto = ({ src, caption, index, fallbackUrl }: any) => {
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, rotate: index % 2 === 0 ? -2 : 2 }}
+            whileInView={{ opacity: 1, rotate: index % 2 === 0 ? -1 : 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            whileHover={{ y: -15, scale: 1.02 }}
-            className="relative group cursor-pointer"
+            whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
+            className="bg-white p-5 pb-10 shadow-[0_4px_20px_rgb(0,0,0,0.03)] rounded-[2.5rem] border border-amber-50 relative group"
         >
-            {/* 外部发光层 */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-100 transition duration-700"></div>
-
-            <div className="relative bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                <div className="aspect-[4/5] overflow-hidden relative">
-                    <img
-                        src={imgSrc}
-                        alt={caption}
-                        className={`w-full h-full object-cover transition-all duration-1000 ${isError ? 'opacity-80' : 'grayscale-[0.4] group-hover:grayscale-0'} group-hover:scale-110`}
-                        referrerPolicy="no-referrer"
-                        onError={() => {
-                            if (!isError) {
-                                setIsError(true);
-                                setImgSrc(fallbackUrl);
-                            }
-                        }}
-                    />
-                    {/* 扫描线效果 */}
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20 group-hover:opacity-40"></div>
-                </div>
-
-                {/* 底部信息条 */}
-                <div className="p-5 bg-gradient-to-t from-black via-black/90 to-transparent border-t border-white/5">
-                    <div className="flex justify-between items-end">
-                        <div>
-                            <p className="text-cyan-500 font-mono text-[9px] mb-1 uppercase tracking-[0.3em]">Sector Archive // 0{index + 1}</p>
-                            <h4 className="text-white font-black text-xl tracking-tight">{caption}</h4>
-                        </div>
-                        <div className="text-white/20 font-mono text-[10px] pb-1">35.2°N 116.4°E</div>
-                    </div>
-                </div>
-
-                {/* 状态指示灯 */}
-                <div className="absolute top-4 left-4 flex gap-2">
-                    <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_#22d3ee] animate-pulse"></div>
-                    <div className="px-2 py-0.5 rounded-sm bg-cyan-500/10 border border-cyan-500/20 text-[8px] font-mono text-cyan-400 uppercase tracking-widest">Live</div>
-                </div>
+            <div className="aspect-square overflow-hidden rounded-[2rem] bg-amber-50/50 mb-4">
+                <img
+                    src={src}
+                    alt={caption}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => { (e.target as HTMLImageElement).src = fallbackUrl; }}
+                />
             </div>
+            <div className="flex justify-center items-center gap-1 mb-1">
+                <Star size={10} className="text-amber-200 fill-amber-200" />
+                <Star size={10} className="text-amber-200 fill-amber-200" />
+                <Star size={10} className="text-amber-200 fill-amber-200" />
+            </div>
+            <p className="text-center font-bold text-amber-900/50 text-lg tracking-tight">
+                {caption}
+            </p>
         </motion.div>
     );
 };
 
 const App: React.FC = () => {
-    // 预设的高质量航天主题占位图，用于在本地图片不可用时展示预览效果
-    const fallbackPhotos = [
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1541873676947-91901048b64e?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1543324564-7082e7913300?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1536697246747-0853062245f3?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=800"
+    const birthDate = new Date('2023-02-17');
+    const today = new Date('2026-03-28');
+    const diffDays = Math.ceil(Math.abs(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    const photos = [
+        { src: "./20260328115230_7177_191.jpg", caption: "小壮在巡视领地" },
+        { src: "./20260328115232_7178_191.jpg", caption: "捕获满电笑容" },
+        { src: "./20260328115310_7180_191.jpg", caption: "三岁愿望启动" },
+        { src: "./20260328115311_7181_191.jpg", caption: "纯真快乐瞬间" },
+        { src: "./20260328115311_7182_191.jpg", caption: "哈哈大笑时刻" },
+        { src: "./20260328115314_7185_191.jpg", caption: "雪地小探险家" },
+        { src: "./20260328115314_7186_191.jpg", caption: "帅气小船员" },
     ];
 
-    return (
-        <div className="relative min-h-screen bg-[#050505] text-white selection:bg-cyan-500/30 overflow-x-hidden">
-            {/* 全局背景噪声 */}
-            <div className="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+    const fallbackUrl = "https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800";
 
-            {/* 顶部导航 */}
-            <nav className="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center backdrop-blur-xl bg-black/40 border-b border-white/5">
-                <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.3)]">
-                        <Shield size={20} className="text-white" />
+    return (
+        <div className="min-h-screen bg-[#FFFEFA] text-amber-950 font-sans selection:bg-amber-100 overflow-x-hidden">
+
+            {/* 背景装饰：更淡的工程元素 */}
+            <div className="fixed inset-0 pointer-events-none opacity-[0.03] flex flex-col justify-around py-20 px-10">
+                <Truck size={120} className="self-start rotate-12" />
+                <Construction size={100} className="self-end -rotate-12" />
+                <ExcavatorIcon className="self-center scale-150" />
+            </div>
+
+            {/* Navigation */}
+            <nav className="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center backdrop-blur-md bg-white/30 border-b border-amber-50">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-amber-200/80 flex items-center justify-center text-white shadow-sm rotate-3">
+                        <HardHat size={22} />
                     </div>
                     <div>
-                        <span className="font-black tracking-[0.25em] text-xs uppercase block">Mission Control</span>
-                        <span className="text-[9px] text-cyan-500 font-mono tracking-widest opacity-70">PROTOCOL v3.0.4</span>
+                        <span className="font-black text-xl tracking-tight text-amber-900/80 block uppercase">小壮的乐园</span>
+                        <span className="text-[9px] font-bold text-amber-300 uppercase tracking-widest">Est. 2023.02.17</span>
                     </div>
                 </div>
-                <div className="flex items-center gap-8">
-                    <div className="hidden md:flex gap-6 text-[10px] tracking-[0.3em] uppercase text-white/40 font-bold">
-                        <span className="hover:text-cyan-400 cursor-pointer transition-colors">Navigation</span>
-                        <span className="hover:text-cyan-400 cursor-pointer transition-colors">Telemetry</span>
-                    </div>
-                    <div className="flex items-center gap-2 px-3 py-1 bg-cyan-500/10 rounded-full border border-cyan-500/20">
-                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-ping"></div>
-                        <span className="text-[10px] font-mono text-cyan-500 tracking-tighter">SIGNAL: STEADY</span>
+                <div className="flex gap-4">
+                    <div className="flex -space-x-2 opacity-50">
+                        {[1,2,3].map(i => (
+                            <div key={i} className="w-7 h-7 rounded-full bg-amber-100 border-2 border-white flex items-center justify-center">
+                                <Heart size={12} className="text-white fill-white" />
+                            </div>
+                        ))}
                     </div>
                 </div>
             </nav>
 
             {/* Hero Section */}
-            <section className="relative h-screen flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 z-0">
-                    <PlanetScene />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505]"></div>
-                </div>
+            <section className="relative h-screen flex items-center justify-center px-6">
+                <SpeechBubble text="妈妈我好想你啊~" position="top-1/4 left-10 md:left-20" delay={0.5} />
+                <SpeechBubble text="我还没玩完，还要玩一会儿嘛！" position="bottom-1/3 right-10 md:right-20" delay={1.2} />
+                <SpeechBubble text="我要三个！" position="top-1/3 right-10 md:right-32" delay={2} />
 
-                <div className="relative z-10 text-center px-6 max-w-6xl">
+                <div className="relative z-10 text-center max-w-4xl">
                     <motion.div
-                        initial={{ opacity: 0, y: 40 }}
+                        initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 1 }}
                     >
-                        <div className="flex justify-center mb-10">
+                        <div className="flex justify-center mb-8">
                             <motion.div
-                                animate={{ rotate: 360 }}
-                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                                className="relative p-2 border border-cyan-500/20 rounded-full"
+                                animate={{ y: [-10, 10, -10] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                className="bg-amber-50/80 p-5 rounded-[2.5rem] text-amber-300 shadow-sm border border-amber-100"
                             >
-                                <div className="p-5 bg-cyan-500/5 rounded-full border border-cyan-500/10">
-                                    <Compass className="text-cyan-400" size={40} />
-                                </div>
-                                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-cyan-500 rounded-full shadow-[0_0_10px_#22d3ee]"></div>
+                                <ExcavatorIcon className="w-12 h-12" />
                             </motion.div>
                         </div>
 
-                        <h1 className="text-7xl md:text-[10rem] font-black tracking-tighter mb-8 leading-[0.85] uppercase italic">
-                            BEYOND <br/>
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 drop-shadow-[0_10px_20px_rgba(6,182,212,0.3)]">
-                                HORIZON
+                        <h1 className="text-6xl md:text-8xl font-black mb-10 tracking-tighter leading-tight">
+                            <span className="text-amber-900/90">你好, </span>
+                            <span className="text-amber-400 relative inline-block">
+                               小壮
+                               <svg className="absolute -bottom-2 left-0 w-full opacity-40" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                 <path d="M0 5 Q 25 0, 50 5 T 100 5" stroke="#FCD34D" strokeWidth="4" fill="none" strokeLinecap="round" />
+                               </svg>
                             </span>
                         </h1>
 
-                        <p className="text-sm md:text-xl text-white/40 font-mono tracking-[0.4em] max-w-3xl mx-auto mb-14 uppercase">
-                            Explorer Profile: 宝贝成长记录 // MISSION_DAY: 1095
+                        <p className="text-lg md:text-xl text-amber-800/50 font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
+                            来到地球生活的第 <span className="text-amber-400 font-black">{diffDays}</span> 天<br/>
+                            这里是属于你的超大型工程车基地！
                         </p>
 
-                        <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
+                        <div className="flex flex-wrap justify-center gap-4">
                             <motion.button
-                                whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(6, 182, 212, 0.5)" }}
+                                whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="px-12 py-5 bg-cyan-500 text-black rounded-sm font-black text-sm tracking-[0.4em] uppercase transition-all shadow-xl"
+                                className="px-10 py-4 bg-amber-300 text-white rounded-[2rem] font-black text-lg shadow-lg shadow-amber-200/50 hover:bg-amber-400 transition-all flex items-center gap-3"
                             >
-                                初始化核心档案
+                                开启探索记录 <Camera size={20} />
                             </motion.button>
-                            <div className="flex flex-col items-start font-mono text-[9px] text-white/30 border-l border-white/10 pl-6 space-y-1">
-                                <div>LATITUDE: 35.6895° N</div>
-                                <div>LONGITUDE: 139.6917° E</div>
-                                <div className="text-cyan-500/50">SYSTEM_STATUS: READY</div>
-                            </div>
                         </div>
                     </motion.div>
                 </div>
-
-                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-cyan-500/40 animate-bounce cursor-pointer" onClick={() => document.getElementById('quote')?.scrollIntoView({ behavior: 'smooth' })}>
-                    <ChevronDown size={32} />
-                </div>
             </section>
 
-            {/* Quote Section */}
-            <section id="quote" className="py-48 px-6 relative border-y border-white/5 bg-[#080808]">
-                <div className="container mx-auto max-w-5xl">
+            {/* DashBoard - 柔和的仪表盘 */}
+            <section className="py-20 px-8">
+                <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        className="flex flex-col items-center text-center"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="bg-white p-10 rounded-[3rem] border border-amber-50 shadow-sm flex flex-col items-center text-center"
                     >
-                        <div className="w-16 h-16 rounded-full bg-yellow-400/10 flex items-center justify-center mb-10 border border-yellow-400/20 shadow-[0_0_30px_rgba(250,204,21,0.1)]">
-                            <Zap className="text-yellow-400" size={32} />
+                        <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-300 mb-6">
+                            <Calendar size={28} />
                         </div>
-                        <h2 className="text-3xl md:text-5xl font-light leading-[1.4] tracking-tight text-white/95 italic">
-                            “生命是一场漫长的航行，<br/>
-                            而你正以最闪耀的频率，<br/>
-                            向着星辰大海发出信号。”
-                        </h2>
-                        <div className="mt-16 h-24 w-[1px] bg-gradient-to-b from-cyan-500 via-blue-500 to-transparent"></div>
+                        <h3 className="font-black text-2xl mb-2 text-amber-900/80">生日坐标</h3>
+                        <p className="text-amber-800/40 font-bold uppercase tracking-widest text-xs">2023年2月17日</p>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="bg-amber-50 p-10 rounded-[3rem] shadow-sm text-amber-600 flex flex-col items-center text-center border border-amber-100"
+                    >
+                        <div className="w-16 h-16 bg-white/60 rounded-2xl flex items-center justify-center mb-6 text-amber-400">
+                            <Truck size={28} />
+                        </div>
+                        <h3 className="font-black text-2xl mb-2">工程车专家</h3>
+                        <p className="text-amber-700/60 font-medium italic text-sm">挖掘机、搅拌车全精通</p>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="bg-white p-10 rounded-[3rem] border border-amber-50 shadow-sm flex flex-col items-center text-center"
+                    >
+                        <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-300 mb-6">
+                            <Star size={28} fill="currentColor" />
+                        </div>
+                        <h3 className="font-black text-2xl mb-2 text-amber-900/80">我的原则</h3>
+                        <p className="text-amber-800/40 font-bold uppercase tracking-widest text-xs">吃啥都要三个！</p>
                     </motion.div>
                 </div>
             </section>
 
             {/* Gallery Section */}
-            <section id="gallery" className="py-32 px-6">
+            <section id="gallery" className="py-32 px-8">
                 <div className="container mx-auto max-w-7xl">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-32 gap-10">
-                        <div className="relative">
-                            <div className="absolute -left-10 top-0 text-[10rem] font-black text-white/[0.02] select-none leading-none">MEM</div>
-                            <span className="text-cyan-500 font-mono tracking-[0.6em] uppercase text-[10px] mb-4 block relative z-10">Visual Archive Unit</span>
-                            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter relative z-10">视觉记忆档案</h2>
+                    <div className="flex flex-col items-center mb-24 text-center">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Sparkles className="text-amber-200" size={18} />
+                            <span className="text-amber-300 font-black tracking-[0.4em] uppercase text-[10px] px-4 py-1.5 bg-amber-50/50 rounded-full border border-amber-100/50">Construction Log</span>
+                            <Sparkles className="text-amber-200" size={18} />
                         </div>
-                        <div className="text-right font-mono text-white/20 text-[10px] space-y-1 mb-2">
-                            <div>ENCRYPTION: AES-256-GCM</div>
-                            <div>COMPRESSION: LZMA_ULTRA</div>
-                            <div className="text-cyan-500/40">AUTH_TOKEN: VERIFIED</div>
+                        <h2 className="text-5xl md:text-6xl font-black text-amber-900/80 tracking-tighter">小壮的精彩时刻</h2>
+                        <div className="flex gap-2 mt-6">
+                            <div className="w-2.5 h-2.5 rounded-full bg-amber-200"></div>
+                            <div className="w-2.5 h-2.5 rounded-full bg-amber-100"></div>
+                            <div className="w-2.5 h-2.5 rounded-full bg-amber-50"></div>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        <PhotoWindow
-                            src="./20260328115230_7177_191.jpg"
-                            fallbackUrl={fallbackPhotos[0]}
-                            caption="超市补给行动"
-                            index={0}
-                        />
-                        <PhotoWindow
-                            src="./20260328115232_7178_191.jpg"
-                            fallbackUrl={fallbackPhotos[1]}
-                            caption="能量释放瞬间"
-                            index={1}
-                        />
-                        <PhotoWindow
-                            src="./20260328115310_7180_191.jpg"
-                            fallbackUrl={fallbackPhotos[2]}
-                            caption="生命周期：三年"
-                            index={2}
-                        />
-                        <PhotoWindow
-                            src="./20260328115311_7181_191.jpg"
-                            fallbackUrl={fallbackPhotos[3]}
-                            caption="核心快乐反馈"
-                            index={3}
-                        />
-                        <PhotoWindow
-                            src="./20260328115311_7182_191.jpg"
-                            fallbackUrl={fallbackPhotos[4]}
-                            caption="音频频率测试"
-                            index={4}
-                        />
-                        <PhotoWindow
-                            src="./20260328115314_7185_191.jpg"
-                            fallbackUrl={fallbackPhotos[5]}
-                            caption="雪地极端环境适应"
-                            index={5}
-                        />
-                        <PhotoWindow
-                            src="./20260328115314_7186_191.jpg"
-                            fallbackUrl={fallbackPhotos[6]}
-                            caption="预备宇航员形态"
-                            index={6}
-                        />
+                        {photos.map((photo, i) => (
+                            <CutePhoto
+                                key={i}
+                                src={photo.src}
+                                caption={photo.caption}
+                                index={i}
+                                fallbackUrl={fallbackUrl}
+                            />
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* Wishes Section */}
-            <section className="py-48 px-6 relative overflow-hidden">
+            {/* Message Section - 奶油色卡片 */}
+            <section className="py-40 px-8">
                 <div className="container mx-auto max-w-4xl relative">
-                    {/* 背景发光球 */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-900/10 rounded-full blur-[160px] pointer-events-none"></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-amber-100/10 rounded-full blur-[100px] pointer-events-none"></div>
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.98 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="relative bg-white/[0.02] backdrop-blur-2xl p-16 md:p-24 rounded-3xl border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden"
+                        className="bg-white/90 backdrop-blur-md p-12 md:p-24 rounded-[4rem] border-4 border-amber-50 shadow-xl text-center relative z-10 overflow-hidden"
                     >
-                        {/* 装饰激光线 */}
-                        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
-                        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
+                        <div className="absolute top-10 left-10 text-amber-50"><Hammer size={40} /></div>
+                        <div className="absolute bottom-10 right-10 text-amber-50 rotate-12"><Construction size={40} /></div>
 
-                        <div className="flex justify-center mb-14">
-                            <div className="p-4 bg-cyan-500/10 rounded-full border border-cyan-500/20">
-                                <Sparkles className="text-cyan-400" size={48} />
+                        <div className="flex justify-center mb-12">
+                            <div className="flex gap-2 opacity-60">
+                                <Heart className="text-rose-300 fill-rose-300" size={28} />
+                                <Heart className="text-rose-300 fill-rose-300" size={28} />
+                                <Heart className="text-rose-300 fill-rose-300" size={28} />
                             </div>
                         </div>
 
-                        <h2 className="text-4xl md:text-5xl font-black text-center mb-14 uppercase tracking-[0.2em] italic">基地指挥官指令</h2>
+                        <h2 className="text-4xl md:text-5xl font-black text-amber-900/80 mb-14 italic tracking-tight uppercase">致我们的工程车小王子</h2>
 
-                        <div className="space-y-10 text-center relative z-10">
-                            <p className="text-2xl md:text-4xl font-light text-white/90 leading-tight tracking-tight">
-                                “愿你拥有星辰大海的征途，<br/>
-                                也拥有随时降落家港的勇气。”
+                        <div className="space-y-12">
+                            <p className="text-2xl md:text-3xl font-medium text-amber-800/60 leading-snug italic">
+                                “愿你拥有挖掘机般探索世界的力量，<br/>
+                                也有搅拌车般容纳快乐的心怀。<br/>
+                                无论你想玩多久，家永远是你的终点站。”
                             </p>
-
-                            <div className="flex flex-col items-center gap-6 pt-10">
-                                <div className="flex justify-center items-center gap-6">
-                                    <div className="h-[1px] w-12 bg-white/20"></div>
-                                    <p className="text-cyan-500 font-mono font-bold tracking-[0.5em] uppercase text-xs">Origin Commanders</p>
-                                    <div className="h-[1px] w-12 bg-white/20"></div>
+                            <div className="flex flex-col items-center gap-6 pt-12">
+                                <div className="h-1.5 w-24 bg-amber-100 rounded-full"></div>
+                                <p className="text-amber-400 font-black text-2xl tracking-[0.25em] uppercase">爱你的爸爸妈妈</p>
+                                <div className="flex gap-4 opacity-30">
+                                    <Smile size={24} />
+                                    <Smile size={24} />
+                                    <Smile size={24} />
                                 </div>
-                                <div className="text-[10px] font-mono text-white/20 tracking-widest">ENCRYPTED_SIGNATURE: MOM_AND_DAD_001</div>
                             </div>
-                        </div>
-
-                        {/* 装饰小图标 */}
-                        <div className="absolute top-6 right-6 opacity-10">
-                            <Globe size={120} />
                         </div>
                     </motion.div>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="py-24 px-6 text-center border-t border-white/5 bg-black/50 backdrop-blur-md">
+            <footer className="py-24 px-8 text-center bg-amber-50/20 border-t border-amber-50">
                 <div className="flex flex-col items-center gap-8">
-                    <div className="flex items-center gap-4">
-                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-                        <div className="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
+                    <div className="flex items-center gap-3">
+                        <ExcavatorIcon className="w-10 h-10 text-amber-200" />
+                        <span className="text-xl font-black text-amber-900/40 tracking-tighter uppercase">Happy Planet // XZ.</span>
                     </div>
-                    <div className="font-mono text-[9px] tracking-[0.6em] text-white/20 uppercase">
-                        End of Transmission // mission_completed // 2026.03
-                    </div>
-                    <div className="text-[10px] text-white/10 font-mono">
-                        SERVER_STATUS: ONLINE // UPTIME: 1095 DAYS
+                    <p className="text-amber-900/10 text-[10px] font-black tracking-[0.4em] uppercase">
+                        Since 2023.02.17 · 陪小壮一起成长的第 {diffDays} 天
+                    </p>
+                    <div className="flex gap-4">
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-100"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-100"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-amber-100"></div>
                     </div>
                 </div>
             </footer>
+
+            {/* 滚动提示 */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-amber-200/30 animate-bounce pointer-events-none">
+                <ChevronDown size={32} />
+            </div>
         </div>
     );
 };
