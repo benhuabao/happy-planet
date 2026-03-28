@@ -15,7 +15,9 @@ import {
     Calendar,
     Sparkles,
     Pin,
-    Globe
+    Globe,
+    Music,
+    Mic2
 } from 'lucide-react';
 
 // 自定义挖掘机小图标 (SVG)
@@ -94,18 +96,16 @@ const App: React.FC = () => {
     const today = new Date('2026-03-28');
     const diffDays = Math.ceil(Math.abs(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
 
-    // 照片数据配置：包含了最新的 10 张照片识别结果
+    // 照片数据配置：包含所有 60 张照片
     const photos = [
-        // 第一批照片
-        { src: "./20260328115230_7177_191.jpg", caption: "超市里的小帮手" },
-        { src: "./20260328115232_7178_191.jpg", caption: "灿烂的笑容" },
+        // 第一至五批 (之前的 47 张)
+        { src: "./20260328115230_7177_191.jpg", caption: "我是小乔丹" },
+        { src: "./20260328115232_7178_191.jpg", caption: "可爱的小妹妹吗" },
         { src: "./20260328115310_7180_191.jpg", caption: "三岁愿望启动" },
-        { src: "./20260328115311_7181_191.jpg", caption: "纯真快乐瞬间" },
+        { src: "./20260328115311_7181_191.jpg", caption: "妈妈弄的小刺猬头" },
         { src: "./20260328115311_7182_191.jpg", caption: "哈哈大笑时刻" },
-        { src: "./20260328115314_7185_191.jpg", caption: "雪地小探险家" },
-        { src: "./20260328115314_7186_191.jpg", caption: "帅气小船员" },
-
-        // 第二批照片
+        { src: "./20260328115314_7185_191.jpg", caption: "雪地绅士" },
+        { src: "./20260328115314_7186_191.jpg", caption: "可爱学生娃" },
         { src: "./20260328140820_7226_191.jpg", caption: "骑着小海豚出发啦！" },
         { src: "./20260328140821_7227_191.jpg", caption: "超级无敌甜的笑脸" },
         { src: "./20260328140822_7228_191.jpg", caption: "花丛中的帅气小模特" },
@@ -116,8 +116,6 @@ const App: React.FC = () => {
         { src: "./微信图片_20260328140806_7209_191.jpg", caption: "暖阳下的快乐蹲蹲" },
         { src: "./微信图片_20260328140807_7210_191.jpg", caption: "带着翻斗车去散步" },
         { src: "./微信图片_20260328140808_7211_191.jpg", caption: "爸爸怀里的小司机" },
-
-        // 第三批照片 (最新添加)
         { src: "./微信图片_20260328140809_7212_191.jpg", caption: "帅气的小班长上线" },
         { src: "./微信图片_20260328140810_7213_191.jpg", caption: "正在搬运“重型”物资" },
         { src: "./微信图片_20260328140810_7214_191.jpg", caption: "和好朋友打个招呼" },
@@ -127,7 +125,44 @@ const App: React.FC = () => {
         { src: "./微信图片_20260328140814_7218_191.jpg", caption: "今天又是满载而归的一天" },
         { src: "./微信图片_20260328140815_7219_191.jpg", caption: "观察小动物在干什么" },
         { src: "./微信图片_20260328140815_7220_191.jpg", caption: "真香！大口大口吃玉米" },
-        { src: "./微信图片_20260328140816_7221_191.jpg", caption: "专注干饭的小壮最可爱" }
+        { src: "./微信图片_20260328140816_7221_191.jpg", caption: "专注干饭的小壮最可爱" },
+        { src: "./微信图片_20260328140817_7222_191.jpg", caption: "夜晚的小小发现者" },
+        { src: "./微信图片_20260328140818_7223_191.jpg", caption: "红红火火的快乐时刻" },
+        { src: "./微信图片_20260328140819_7224_191.jpg", caption: "和好朋友的海豚航行" },
+        { src: "./微信图片_20260328140819_7225_191.jpg", caption: "全宇宙最有潜力的歌神" },
+        { src: "./微信图片_20260328141218_7229_191.jpg", caption: "草坪上的工程车作业中" },
+        { src: "./微信图片_20260328141225_7230_191.jpg", caption: "带着运输车去拉货" },
+        { src: "./微信图片_20260328141244_7231_191.jpg", caption: "向着阳光，全速奔跑！" },
+        { src: "./微信图片_20260328141300_7232_191.jpg", caption: "捕获一只毛茸茸的羊驼" },
+        { src: "./微信图片_20260328141311_7233_191.jpg", caption: "小羊的爱心投喂官" },
+        { src: "./微信图片_20260328141339_7236_191.jpg", caption: "这种饮料我先“干”为敬" },
+        { src: "./微信图片_20260328141345_7237_191.jpg", caption: "超级能量大爆发！" },
+        { src: "./微信图片_20260328141403_7238_191.jpg", caption: "草坪上的快乐起飞" },
+        { src: "./微信图片_20260328141435_7241_191.jpg", caption: "与汪星人的秘密会谈" },
+        { src: "./微信图片_20260328141450_7242_191.jpg", caption: "发现夜空中的奇妙信号" },
+        { src: "./微信图片_20260328141524_7243_191.jpg", caption: "平安果的小守护者" },
+        { src: "./微信图片_20260328142051_7244_191.jpg", caption: "复古时光里的小老板" },
+        { src: "./微信图片_20260328142052_7245_191.jpg", caption: "阳光下的巡视时刻" },
+        { src: "./微信图片_20260328142053_7246_191.jpg", caption: "冰凉一夏的补给站" },
+        { src: "./微信图片_20260328142054_7247_191.jpg", caption: "目标：冲向云霄的大飞机！" },
+        { src: "./微信图片_20260328142055_7248_191.jpg", caption: "正在与大熊猫交换情报" },
+
+        // 第六批 (之前的 9 张)
+        { src: "./微信图片_20260328142055_7250_191.jpg", caption: "和好朋友的快乐合影" },
+        { src: "./微信图片_20260328142056_7251_191.jpg", caption: "专注拼搭的小工程师" },
+        { src: "./微信图片_20260328142057_7252_191.jpg", caption: "花园里的小小探险家" },
+        { src: "./微信图片_20260328142058_7253_191.jpg", caption: "第一次尝试攀岩！" },
+        { src: "./微信图片_20260328142059_7254_191.jpg", caption: "被泡泡包围的幸福时刻" },
+        { src: "./微信图片_20260328142059_7255_191.jpg", caption: "大口吃西瓜的夏天" },
+        { src: "./微信图片_20260328142100_7256_191.jpg", caption: "认真的小画家在创作" },
+        { src: "./微信图片_20260328142101_7257_191.jpg", caption: "准备出发去幼儿园啦" },
+        { src: "./微信图片_20260328142102_7258_191.jpg", caption: "睡着的小天使" },
+
+        // 最新增加的最后 4 张 (第七批)
+        { src: "./微信图片_20260328142103_7259_191.jpg", caption: "湖畔的静谧时刻" },
+        { src: "./微信图片_20260328142103_7260_191.jpg", caption: "观察水里的小秘密" },
+        { src: "./微信图片_20260328142104_7261_191.jpg", caption: "旷野里的回头一瞥" },
+        { src: "./微信图片_20260328142107_7262_191.jpg", caption: "沉浸在书海的小壮" }
     ];
 
     const fallbackUrl = "https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800";
@@ -157,8 +192,8 @@ const App: React.FC = () => {
 
             {/* Hero Section */}
             <section className="relative h-screen flex items-center justify-center px-6">
-                <SpeechBubble text="妈妈我好想你呀~" position="top-1/4 left-10 md:left-20" delay={0.5} />
-                <SpeechBubble text="这个翻斗车太好玩了！" position="bottom-1/3 right-10 md:right-20" delay={1.2} />
+                <SpeechBubble text="爸爸妈妈我爱你们~" position="top-1/4 left-10 md:left-20" delay={0.5} />
+                <SpeechBubble text="看我发现的大飞机！" position="bottom-1/3 right-10 md:right-20" delay={1.2} />
 
                 <div className="relative z-10 text-center max-w-4xl">
                     <motion.div
@@ -188,7 +223,7 @@ const App: React.FC = () => {
 
                         <p className="text-lg md:text-xl text-amber-800/50 font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
                             来到地球生活的第 <span className="text-amber-400 font-black">{diffDays}</span> 天<br/>
-                            这里是属于你的超大型工程车基地！
+                            这里是属于你的超大型成长基地！
                         </p>
 
                         <div className="flex flex-wrap justify-center gap-4">
@@ -211,7 +246,7 @@ const App: React.FC = () => {
                     <div className="flex flex-col items-center mb-24 text-center">
                         <div className="flex items-center gap-2 mb-4">
                             <Sparkles className="text-amber-200" size={18} />
-                            <span className="text-amber-300 font-black tracking-[0.4em] uppercase text-[10px] px-4 py-1.5 bg-amber-50/50 rounded-full border border-amber-100/50">Construction Log</span>
+                            <span className="text-amber-300 font-black tracking-[0.4em] uppercase text-[10px] px-4 py-1.5 bg-amber-50/50 rounded-full border border-amber-100/50">Growth Archive</span>
                             <Sparkles className="text-amber-200" size={18} />
                         </div>
                         <h2 className="text-5xl md:text-6xl font-black text-amber-900/80 tracking-tighter italic">成长纪念册</h2>
