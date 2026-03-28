@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>快乐星球成长记 - 宝贝三岁啦！</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Quicksand:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        kuaile: ['"ZCOOL KuaiLe"', 'cursive'],
+                        sans: ['"Quicksand"', '"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        planet: {
+                            yellow: '#FFD93D',
+                            blue: '#6EB3F7',
+                            pink: '#FF87B2',
+                            orange: '#FF9F45',
+                            mint: '#A8E6CF',
+                            dark: '#1A2B48',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #FDFCF0;
+            color: #1A2B48;
+            overflow-x: hidden;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+    <script type="importmap">
+        {
+          "imports": {
+            "react": "https://esm.sh/react@^19.2.0",
+            "react-dom/": "https://esm.sh/react-dom@^19.2.0/",
+            "react/": "https://esm.sh/react@^19.2.0/",
+            "@react-three/fiber": "https://esm.sh/@react-three/fiber@^9.4.0",
+            "@react-three/drei": "https://esm.sh/@react-three/drei@^10.7.7",
+            "three": "https://esm.sh/three@^0.181.1",
+            "framer-motion": "https://esm.sh/framer-motion@^12.23.24",
+            "lucide-react": "https://esm.sh/lucide-react@^0.553.0"
+          }
+        }
+    </script>
+    <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
