@@ -41,7 +41,7 @@ const PhotoFrame = ({ src, caption, rotation }: any) => (
         style={{ rotate: rotation }}
         className="bg-white p-4 pb-12 shadow-2xl rounded-sm border border-stone-100 transform transition-all duration-300"
     >
-        <div className="aspect-square overflow-hidden bg-stone-100 mb-4">
+        <div className="aspect-[3/4] overflow-hidden bg-stone-100 mb-4">
             <img
                 src={src}
                 alt={caption}
@@ -186,22 +186,44 @@ const App: React.FC = () => {
                         <p className="text-planet-dark/40">那些被爱包围的时刻</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
                         <PhotoFrame
-                            src="https://picsum.photos/seed/baby1/800/800"
-                            caption="第一次看大海"
+                            src="/微信图片_20260328115230_7177_191.jpg"
+                            caption="超市里的小帮手"
                             rotation="-3deg"
                         />
                         <PhotoFrame
-                            src="https://picsum.photos/seed/baby2/800/800"
-                            caption="最爱的小熊"
+                            src="/微信图片_20260328115232_7178_191.jpg"
+                            caption="灿烂的笑容"
                             rotation="2deg"
                         />
                         <PhotoFrame
-                            src="https://picsum.photos/seed/baby3/800/800"
-                            caption="生日蛋糕初体验"
+                            src="/微信图片_20260328115310_7180_191.jpg"
+                            caption="三岁生日快乐！"
                             rotation="-1deg"
                         />
+                        <PhotoFrame
+                            src="/微信图片_20260328115311_7181_191.jpg"
+                            caption="纯真的快乐"
+                            rotation="3deg"
+                        />
+                        <PhotoFrame
+                            src="/微信图片_20260328115311_7182_191.jpg"
+                            caption="哈哈大笑时刻"
+                            rotation="-2deg"
+                        />
+                        <PhotoFrame
+                            src="/微信图片_20260328115314_7185_191.jpg"
+                            caption="雪地里的小绅士"
+                            rotation="1deg"
+                        />
+                        <div className="md:col-span-2 lg:col-span-1 flex justify-center">
+                            <PhotoFrame
+                                src="/微信图片_20260328115314_7186_191.jpg"
+                                caption="帅气的小学生模样"
+                                rotation="4deg"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
