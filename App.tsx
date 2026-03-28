@@ -45,7 +45,7 @@ const PhotoFrame = ({ src, caption, rotation }: any) => (
             <img
                 src={src}
                 alt={caption}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                className="w-full h-full object-cover transition-all duration-700"
                 referrerPolicy="no-referrer"
             />
         </div>
