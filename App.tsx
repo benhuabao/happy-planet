@@ -17,7 +17,7 @@ import {
     Pin
 } from 'lucide-react';
 
-// 自定义挖掘机小图标 (SVG) - 调淡颜色
+// 自定义挖掘机小图标 (SVG)
 const ExcavatorIcon = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
         <path d="M2 21h20" />
@@ -28,7 +28,7 @@ const ExcavatorIcon = ({ className }: { className?: string }) => (
     </svg>
 );
 
-// 气泡悄悄话组件 - 保持柔和视觉
+// 气泡悄悄话组件
 const SpeechBubble = ({ text, position, delay }: any) => (
     <motion.div
         initial={{ opacity: 0, scale: 0.5, y: 20 }}
@@ -43,9 +43,8 @@ const SpeechBubble = ({ text, position, delay }: any) => (
     </motion.div>
 );
 
-// 拍立得照片组件 - 瀑布流专用，带装饰性贴纸
+// 拍立得照片组件
 const PhotoCard = ({ src, caption, index, fallbackUrl }: any) => {
-    // 根据索引生成一些随机感
     const randomRotate = (index % 3 === 0 ? '-1.5deg' : index % 3 === 1 ? '1.5deg' : '0.5deg');
     const stickerColor = (index % 3 === 0 ? 'bg-amber-100' : index % 3 === 1 ? 'bg-blue-100' : 'bg-rose-100');
 
@@ -58,7 +57,6 @@ const PhotoCard = ({ src, caption, index, fallbackUrl }: any) => {
             className="break-inside-avoid mb-10 relative group"
             style={{ rotate: randomRotate }}
         >
-            {/* 装饰性小贴纸 */}
             <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-8 ${stickerColor} opacity-60 backdrop-blur-sm rotate-2 z-10 rounded-sm shadow-sm group-hover:opacity-100 transition-opacity`}></div>
 
             <div className="bg-white p-4 pb-10 shadow-[0_4px_25px_rgb(0,0,0,0.02)] rounded-sm border border-amber-50 relative group-hover:shadow-[0_10px_40px_rgb(0,0,0,0.06)] transition-all duration-500">
@@ -82,7 +80,6 @@ const PhotoCard = ({ src, caption, index, fallbackUrl }: any) => {
                     {caption}
                 </p>
 
-                {/* 模拟相册角标 */}
                 <div className="absolute bottom-2 right-2 text-amber-100/50 group-hover:text-amber-300 transition-colors">
                     <Pin size={14} />
                 </div>
@@ -96,18 +93,28 @@ const App: React.FC = () => {
     const today = new Date('2026-03-28');
     const diffDays = Math.ceil(Math.abs(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
 
-    // 模拟数据：这里放置小壮的照片
+    // 照片数据配置：包含了新上传的 10 张照片识别结果
     const photos = [
-        { src: "./20260328115230_7177_191.jpg", caption: "起飞！小小飞行员上线" },
-        { src: "./20260328115232_7178_191.jpg", caption: "捕捉到一个超级甜的笑容" },
-        { src: "./20260328115310_7180_191.jpg", caption: "向日葵花海里的小酷盖" },
-        { src: "./20260328115311_7181_191.jpg", caption: "你好呀，大海龟朋友" },
-        { src: "./20260328115311_7182_191.jpg", caption: "沉浸在尼莫的童话世界" },
-        { src: "./20260328115314_7185_191.jpg", caption: "冰上小勇士，全副武装" },
-        { src: "./20260328115314_7186_191.jpg", caption: "漫步在蓝色冰雪奇缘" },
-        { src: "./20260328115316_7187_191.jpg", caption: "阳光下的快乐就是这么简单" },
-        { src: "./20260328115317_7188_191.jpg", caption: "带着心爱的工程车去探险" },
-        { src: "./20260328115319_7189_191.jpg", caption: "和爸爸一起研究新装备" },
+        // 原始照片
+        { src: "./20260328115230_7177_191.jpg", caption: "超市里的小帮手" },
+        { src: "./20260328115232_7178_191.jpg", caption: "灿烂的笑容" },
+        { src: "./20260328115310_7180_191.jpg", caption: "三岁愿望启动" },
+        { src: "./20260328115311_7181_191.jpg", caption: "纯真快乐瞬间" },
+        { src: "./20260328115311_7182_191.jpg", caption: "哈哈大笑时刻" },
+        { src: "./20260328115314_7185_191.jpg", caption: "雪地小探险家" },
+        { src: "./20260328115314_7186_191.jpg", caption: "帅气小船员" },
+
+        // 新增 10 张照片
+        { src: "./20260328140820_7226_191.jpg", caption: "骑着小海豚出发啦！" },
+        { src: "./20260328140821_7227_191.jpg", caption: "超级无敌甜的笑脸" },
+        { src: "./20260328140822_7228_191.jpg", caption: "花丛中的帅气小模特" },
+        { src: "./微信图片_20260328140803_7205_191.jpg", caption: "看！我和大海龟握个手" },
+        { src: "./微信图片_20260328140804_7206_191.jpg", caption: "正在观察尼莫的小壮" },
+        { src: "./微信图片_20260328140805_7207_191.jpg", caption: "冰面上的平衡感测试" },
+        { src: "./微信图片_20260328140806_7208_191.jpg", caption: "极地冰雪大冒险" },
+        { src: "./微信图片_20260328140806_7209_191.jpg", caption: "暖阳下的快乐蹲蹲" },
+        { src: "./微信图片_20260328140807_7210_191.jpg", caption: "带着翻斗车去散步" },
+        { src: "./微信图片_20260328140808_7211_191.jpg", caption: "爸爸怀里的小司机" }
     ];
 
     const fallbackUrl = "https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800";
@@ -133,22 +140,12 @@ const App: React.FC = () => {
                         <span className="text-[9px] font-bold text-amber-300 uppercase tracking-widest">Est. 2023.02.17</span>
                     </div>
                 </div>
-                <div className="flex gap-4">
-                    <div className="flex -space-x-2 opacity-50">
-                        {[1,2,3].map(i => (
-                            <div key={i} className="w-7 h-7 rounded-full bg-amber-100 border-2 border-white flex items-center justify-center">
-                                <Heart size={12} className="text-white fill-white" />
-                            </div>
-                        ))}
-                    </div>
-                </div>
             </nav>
 
             {/* Hero Section */}
             <section className="relative h-screen flex items-center justify-center px-6">
-                <SpeechBubble text="妈妈我好想你啊~" position="top-1/4 left-10 md:left-20" delay={0.5} />
-                <SpeechBubble text="我还没玩完，还要玩一会儿嘛！" position="bottom-1/3 right-10 md:right-20" delay={1.2} />
-                <SpeechBubble text="我要三个！" position="top-1/3 right-10 md:right-32" delay={2} />
+                <SpeechBubble text="妈妈我好想你呀~" position="top-1/4 left-10 md:left-20" delay={0.5} />
+                <SpeechBubble text="这个翻斗车太好玩了！" position="bottom-1/3 right-10 md:right-20" delay={1.2} />
 
                 <div className="relative z-10 text-center max-w-4xl">
                     <motion.div
@@ -195,50 +192,7 @@ const App: React.FC = () => {
                 </div>
             </section>
 
-            {/* DashBoard */}
-            <section className="py-20 px-8">
-                <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        className="bg-white p-10 rounded-[3rem] border border-amber-50 shadow-sm flex flex-col items-center text-center"
-                    >
-                        <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-300 mb-6">
-                            <Calendar size={28} />
-                        </div>
-                        <h3 className="font-black text-2xl mb-2 text-amber-900/80">生日坐标</h3>
-                        <p className="text-amber-800/40 font-bold uppercase tracking-widest text-xs">2023年2月17日</p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="bg-amber-50 p-10 rounded-[3rem] shadow-sm text-amber-600 flex flex-col items-center text-center border border-amber-100"
-                    >
-                        <div className="w-16 h-16 bg-white/60 rounded-2xl flex items-center justify-center mb-6 text-amber-400">
-                            <Truck size={28} />
-                        </div>
-                        <h3 className="font-black text-2xl mb-2">工程车专家</h3>
-                        <p className="text-amber-700/60 font-medium italic text-sm">挖掘机、搅拌车全精通</p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="bg-white p-10 rounded-[3rem] border border-amber-50 shadow-sm flex flex-col items-center text-center"
-                    >
-                        <div className="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-300 mb-6">
-                            <Star size={28} fill="currentColor" />
-                        </div>
-                        <h3 className="font-black text-2xl mb-2 text-amber-900/80">我的原则</h3>
-                        <p className="text-amber-800/40 font-bold uppercase tracking-widest text-xs">吃啥都要三个！</p>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* Gallery Section - 瀑布流布局 */}
+            {/* Gallery Section */}
             <section id="gallery" className="py-32 px-8">
                 <div className="container mx-auto max-w-7xl">
                     <div className="flex flex-col items-center mb-24 text-center">
@@ -248,15 +202,9 @@ const App: React.FC = () => {
                             <Sparkles className="text-amber-200" size={18} />
                         </div>
                         <h2 className="text-5xl md:text-6xl font-black text-amber-900/80 tracking-tighter italic">成长纪念册</h2>
-                        <p className="mt-4 text-amber-800/40 font-medium">散落在时光里的宝贵瞬间</p>
-                        <div className="flex gap-2 mt-8">
-                            <div className="w-2.5 h-2.5 rounded-full bg-amber-200"></div>
-                            <div className="w-2.5 h-2.5 rounded-full bg-amber-100"></div>
-                            <div className="w-2.5 h-2.5 rounded-full bg-amber-50"></div>
-                        </div>
                     </div>
 
-                    {/* 使用 CSS Columns 实现错落的瀑布流效果 */}
+                    {/* 瀑布流布局 */}
                     <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-8">
                         {photos.map((photo, i) => (
                             <PhotoCard
@@ -271,50 +219,6 @@ const App: React.FC = () => {
                 </div>
             </section>
 
-            {/* Message Section */}
-            <section className="py-40 px-8">
-                <div className="container mx-auto max-w-4xl relative">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-amber-100/10 rounded-full blur-[100px] pointer-events-none"></div>
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.98 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="bg-white/90 backdrop-blur-md p-12 md:p-24 rounded-[4rem] border-4 border-amber-50 shadow-xl text-center relative z-10 overflow-hidden"
-                    >
-                        <div className="absolute top-10 left-10 text-amber-50"><Hammer size={40} /></div>
-                        <div className="absolute bottom-10 right-10 text-amber-50 rotate-12"><Construction size={40} /></div>
-
-                        <div className="flex justify-center mb-12">
-                            <div className="flex gap-2 opacity-60">
-                                <Heart className="text-rose-300 fill-rose-300" size={28} />
-                                <Heart className="text-rose-300 fill-rose-300" size={28} />
-                                <Heart className="text-rose-300 fill-rose-300" size={28} />
-                            </div>
-                        </div>
-
-                        <h2 className="text-4xl md:text-5xl font-black text-amber-900/80 mb-14 italic tracking-tight uppercase">致我们的工程车小王子</h2>
-
-                        <div className="space-y-12">
-                            <p className="text-2xl md:text-3xl font-medium text-amber-800/60 leading-snug italic">
-                                “愿你拥有挖掘机般探索世界的力量，<br/>
-                                也有搅拌车般容纳快乐的心怀。<br/>
-                                无论你想玩多久，家永远是你的终点站。”
-                            </p>
-                            <div className="flex flex-col items-center gap-6 pt-12">
-                                <div className="h-1.5 w-24 bg-amber-100 rounded-full"></div>
-                                <p className="text-amber-400 font-black text-2xl tracking-[0.25em] uppercase">爱你的爸爸妈妈</p>
-                                <div className="flex gap-4 opacity-30">
-                                    <Smile size={24} />
-                                    <Smile size={24} />
-                                    <Smile size={24} />
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
-
             {/* Footer */}
             <footer className="py-24 px-8 text-center bg-amber-50/20 border-t border-amber-50">
                 <div className="flex flex-col items-center gap-8">
@@ -325,18 +229,8 @@ const App: React.FC = () => {
                     <p className="text-amber-900/10 text-[10px] font-black tracking-[0.4em] uppercase">
                         Since 2023.02.17 · 陪小壮一起成长的第 {diffDays} 天
                     </p>
-                    <div className="flex gap-4">
-                        <div className="w-1.5 h-1.5 rounded-full bg-amber-100"></div>
-                        <div className="w-1.5 h-1.5 rounded-full bg-amber-100"></div>
-                        <div className="w-1.5 h-1.5 rounded-full bg-amber-100"></div>
-                    </div>
                 </div>
             </footer>
-
-            {/* 滚动提示 */}
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-amber-200/30 animate-bounce pointer-events-none">
-                <ChevronDown size={32} />
-            </div>
         </div>
     );
 };
