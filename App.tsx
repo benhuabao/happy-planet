@@ -13,7 +13,8 @@ import {
     Hammer,
     MessageCircle,
     Calendar,
-    Sparkles
+    Sparkles,
+    Pin
 } from 'lucide-react';
 
 // 自定义挖掘机小图标 (SVG) - 调淡颜色
@@ -27,7 +28,7 @@ const ExcavatorIcon = ({ className }: { className?: string }) => (
     </svg>
 );
 
-// 气泡悄悄话组件 - 边框更淡，视觉更柔和
+// 气泡悄悄话组件 - 保持柔和视觉
 const SpeechBubble = ({ text, position, delay }: any) => (
     <motion.div
         initial={{ opacity: 0, scale: 0.5, y: 20 }}
@@ -42,33 +43,50 @@ const SpeechBubble = ({ text, position, delay }: any) => (
     </motion.div>
 );
 
-// 拍立得照片组件 - 贯彻“我要三个”
-const CutePhoto = ({ src, caption, index, fallbackUrl }: any) => {
+// 拍立得照片组件 - 瀑布流专用，带装饰性贴纸
+const PhotoCard = ({ src, caption, index, fallbackUrl }: any) => {
+    // 根据索引生成一些随机感
+    const randomRotate = (index % 3 === 0 ? '-1.5deg' : index % 3 === 1 ? '1.5deg' : '0.5deg');
+    const stickerColor = (index % 3 === 0 ? 'bg-amber-100' : index % 3 === 1 ? 'bg-blue-100' : 'bg-rose-100');
+
     return (
         <motion.div
-            initial={{ opacity: 0, rotate: index % 2 === 0 ? -2 : 2 }}
-            whileInView={{ opacity: 1, rotate: index % 2 === 0 ? -1 : 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
-            className="bg-white p-5 pb-10 shadow-[0_4px_20px_rgb(0,0,0,0.03)] rounded-[2.5rem] border border-amber-50 relative group"
+            transition={{ duration: 0.5, delay: (index % 5) * 0.1 }}
+            className="break-inside-avoid mb-10 relative group"
+            style={{ rotate: randomRotate }}
         >
-            <div className="aspect-square overflow-hidden rounded-[2rem] bg-amber-50/50 mb-4">
-                <img
-                    src={src}
-                    alt={caption}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                    onError={(e) => { (e.target as HTMLImageElement).src = fallbackUrl; }}
-                />
+            {/* 装饰性小贴纸 */}
+            <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-8 ${stickerColor} opacity-60 backdrop-blur-sm rotate-2 z-10 rounded-sm shadow-sm group-hover:opacity-100 transition-opacity`}></div>
+
+            <div className="bg-white p-4 pb-10 shadow-[0_4px_25px_rgb(0,0,0,0.02)] rounded-sm border border-amber-50 relative group-hover:shadow-[0_10px_40px_rgb(0,0,0,0.06)] transition-all duration-500">
+                <div className="overflow-hidden rounded-xs bg-amber-50/30 mb-4">
+                    <img
+                        src={src}
+                        alt={caption}
+                        className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => { (e.target as HTMLImageElement).src = fallbackUrl; }}
+                    />
+                </div>
+
+                <div className="flex justify-center items-center gap-1 mb-2 opacity-40">
+                    <Star size={8} className="text-amber-400 fill-amber-400" />
+                    <Star size={8} className="text-amber-400 fill-amber-400" />
+                    <Star size={8} className="text-amber-400 fill-amber-400" />
+                </div>
+
+                <p className="text-center font-bold text-amber-900/50 text-sm tracking-tight px-2 leading-relaxed">
+                    {caption}
+                </p>
+
+                {/* 模拟相册角标 */}
+                <div className="absolute bottom-2 right-2 text-amber-100/50 group-hover:text-amber-300 transition-colors">
+                    <Pin size={14} />
+                </div>
             </div>
-            <div className="flex justify-center items-center gap-1 mb-1">
-                <Star size={10} className="text-amber-200 fill-amber-200" />
-                <Star size={10} className="text-amber-200 fill-amber-200" />
-                <Star size={10} className="text-amber-200 fill-amber-200" />
-            </div>
-            <p className="text-center font-bold text-amber-900/50 text-lg tracking-tight">
-                {caption}
-            </p>
         </motion.div>
     );
 };
@@ -78,14 +96,18 @@ const App: React.FC = () => {
     const today = new Date('2026-03-28');
     const diffDays = Math.ceil(Math.abs(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
 
+    // 模拟数据：这里放置小壮的照片
     const photos = [
-        { src: "./20260328115230_7177_191.jpg", caption: "小壮在巡视领地" },
-        { src: "./20260328115232_7178_191.jpg", caption: "捕获满电笑容" },
-        { src: "./20260328115310_7180_191.jpg", caption: "三岁愿望启动" },
-        { src: "./20260328115311_7181_191.jpg", caption: "纯真快乐瞬间" },
-        { src: "./20260328115311_7182_191.jpg", caption: "哈哈大笑时刻" },
-        { src: "./20260328115314_7185_191.jpg", caption: "雪地小探险家" },
-        { src: "./20260328115314_7186_191.jpg", caption: "帅气小船员" },
+        { src: "./20260328115230_7177_191.jpg", caption: "起飞！小小飞行员上线" },
+        { src: "./20260328115232_7178_191.jpg", caption: "捕捉到一个超级甜的笑容" },
+        { src: "./20260328115310_7180_191.jpg", caption: "向日葵花海里的小酷盖" },
+        { src: "./20260328115311_7181_191.jpg", caption: "你好呀，大海龟朋友" },
+        { src: "./20260328115311_7182_191.jpg", caption: "沉浸在尼莫的童话世界" },
+        { src: "./20260328115314_7185_191.jpg", caption: "冰上小勇士，全副武装" },
+        { src: "./20260328115314_7186_191.jpg", caption: "漫步在蓝色冰雪奇缘" },
+        { src: "./20260328115316_7187_191.jpg", caption: "阳光下的快乐就是这么简单" },
+        { src: "./20260328115317_7188_191.jpg", caption: "带着心爱的工程车去探险" },
+        { src: "./20260328115319_7189_191.jpg", caption: "和爸爸一起研究新装备" },
     ];
 
     const fallbackUrl = "https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800";
@@ -93,8 +115,8 @@ const App: React.FC = () => {
     return (
         <div className="min-h-screen bg-[#FFFEFA] text-amber-950 font-sans selection:bg-amber-100 overflow-x-hidden">
 
-            {/* 背景装饰：更淡的工程元素 */}
-            <div className="fixed inset-0 pointer-events-none opacity-[0.03] flex flex-col justify-around py-20 px-10">
+            {/* 背景装饰 */}
+            <div className="fixed inset-0 pointer-events-none opacity-[0.02] flex flex-col justify-around py-20 px-10">
                 <Truck size={120} className="self-start rotate-12" />
                 <Construction size={100} className="self-end -rotate-12" />
                 <ExcavatorIcon className="self-center scale-150" />
@@ -173,7 +195,7 @@ const App: React.FC = () => {
                 </div>
             </section>
 
-            {/* DashBoard - 柔和的仪表盘 */}
+            {/* DashBoard */}
             <section className="py-20 px-8">
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                     <motion.div
@@ -216,7 +238,7 @@ const App: React.FC = () => {
                 </div>
             </section>
 
-            {/* Gallery Section */}
+            {/* Gallery Section - 瀑布流布局 */}
             <section id="gallery" className="py-32 px-8">
                 <div className="container mx-auto max-w-7xl">
                     <div className="flex flex-col items-center mb-24 text-center">
@@ -225,17 +247,19 @@ const App: React.FC = () => {
                             <span className="text-amber-300 font-black tracking-[0.4em] uppercase text-[10px] px-4 py-1.5 bg-amber-50/50 rounded-full border border-amber-100/50">Construction Log</span>
                             <Sparkles className="text-amber-200" size={18} />
                         </div>
-                        <h2 className="text-5xl md:text-6xl font-black text-amber-900/80 tracking-tighter">小壮的精彩时刻</h2>
-                        <div className="flex gap-2 mt-6">
+                        <h2 className="text-5xl md:text-6xl font-black text-amber-900/80 tracking-tighter italic">成长纪念册</h2>
+                        <p className="mt-4 text-amber-800/40 font-medium">散落在时光里的宝贵瞬间</p>
+                        <div className="flex gap-2 mt-8">
                             <div className="w-2.5 h-2.5 rounded-full bg-amber-200"></div>
                             <div className="w-2.5 h-2.5 rounded-full bg-amber-100"></div>
                             <div className="w-2.5 h-2.5 rounded-full bg-amber-50"></div>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {/* 使用 CSS Columns 实现错落的瀑布流效果 */}
+                    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-8">
                         {photos.map((photo, i) => (
-                            <CutePhoto
+                            <PhotoCard
                                 key={i}
                                 src={photo.src}
                                 caption={photo.caption}
@@ -247,7 +271,7 @@ const App: React.FC = () => {
                 </div>
             </section>
 
-            {/* Message Section - 奶油色卡片 */}
+            {/* Message Section */}
             <section className="py-40 px-8">
                 <div className="container mx-auto max-w-4xl relative">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-amber-100/10 rounded-full blur-[100px] pointer-events-none"></div>
