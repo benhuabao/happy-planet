@@ -96,9 +96,7 @@ const App: React.FC = () => {
     const today = new Date('2026-03-28');
     const diffDays = Math.ceil(Math.abs(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
 
-    // 照片数据配置：包含所有 60 张照片
     const photos = [
-        // 第一至五批 (之前的 47 张)
         { src: "./20260328115230_7177_191.jpg", caption: "我是小乔丹" },
         { src: "./20260328115232_7178_191.jpg", caption: "可爱的小妹妹吗" },
         { src: "./20260328115310_7180_191.jpg", caption: "三岁愿望启动" },
@@ -146,8 +144,6 @@ const App: React.FC = () => {
         { src: "./微信图片_20260328142053_7246_191.jpg", caption: "冰凉一夏的补给站" },
         { src: "./微信图片_20260328142054_7247_191.jpg", caption: "目标：冲向云霄的大飞机！" },
         { src: "./微信图片_20260328142055_7248_191.jpg", caption: "正在与大熊猫交换情报" },
-
-        // 第六批 (之前的 9 张)
         { src: "./微信图片_20260328142055_7250_191.jpg", caption: "光盘行动" },
         { src: "./微信图片_20260328142056_7251_191.jpg", caption: "豪饮豪吃" },
         { src: "./微信图片_20260328142057_7252_191.jpg", caption: "圣诞小老人" },
@@ -156,8 +152,6 @@ const App: React.FC = () => {
         { src: "./微信图片_20260328142059_7255_191.jpg", caption: "我在夏威夷" },
         { src: "./微信图片_20260328142101_7257_191.jpg", caption: "学习学习" },
         { src: "./微信图片_20260328142102_7258_191.jpg", caption: "凳子放这里嘛" },
-
-        // 最新增加的最后 4 张 (第七批)
         { src: "./微信图片_20260328142103_7259_191.jpg", caption: "湖畔的静谧时刻" },
         { src: "./微信图片_20260328142103_7260_191.jpg", caption: "观察水里的小秘密" },
         { src: "./微信图片_20260328142104_7261_191.jpg", caption: "旷野里的回头一瞥" },
@@ -191,10 +185,14 @@ const App: React.FC = () => {
 
             {/* Hero Section */}
             <section className="relative h-screen flex items-center justify-center px-6">
-                <SpeechBubble text="爸爸妈妈我爱你们~" position="top-1/4 left-10 md:left-20" delay={0.5} />
-                <SpeechBubble text="看我发现的大飞机！" position="bottom-1/3 right-10 md:right-20" delay={1.2} />
 
-                <div className="relative z-10 text-center max-w-4xl">
+                {/* --- 这里就是找回的灵魂口头禅！四个角落都安排上了 --- */}
+                <SpeechBubble text="妈妈我好想你呀~" position="top-[20%] left-[5%] md:left-[15%]" delay={0.5} />
+                <SpeechBubble text="我要吃三个！" position="top-[30%] right-[5%] md:right-[15%]" delay={0.9} />
+                <SpeechBubble text="我还没有玩完呢~" position="bottom-[35%] left-[8%] md:left-[20%]" delay={1.3} />
+                <SpeechBubble text="我要玩大挖机！" position="bottom-[25%] right-[8%] md:right-[20%]" delay={1.7} />
+
+                <div className="relative z-10 text-center max-w-4xl mt-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
