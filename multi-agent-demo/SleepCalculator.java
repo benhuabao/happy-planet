@@ -1,6 +1,6 @@
-// Agent B: implement the sleep evaluation. Keep the signature so Main still compiles.
+// Sleep evaluation entry point used by Main; delegates to SleepReport (input in hours).
 public class SleepCalculator {
     public static String evaluate(double hours) {
-        return "Sleep: TODO";
+        return SleepReport.summary(hours);
     }
 }

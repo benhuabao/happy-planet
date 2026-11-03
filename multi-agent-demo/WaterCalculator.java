@@ -1,6 +1,6 @@
-// Agent C: implement the water intake evaluation. Keep the signature so Main still compiles.
+// Water evaluation entry point used by Main; delegates to WaterReport.
 public class WaterCalculator {
     public static String evaluate(int waterMl) {
-        return "Water: TODO";
+        return WaterReport.summary(waterMl);
     }
 }
