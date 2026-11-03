@@ -6,6 +6,7 @@
 cd log-analyzer
 java Main.java                 # 默认读取 sample-access.log
 java Main.java other.log
+java LogAnalyzerCheck.java     # 自检：§5 验收 + 边界 + 随机对照，失败时退出码 1
 ```
 
 ## 1. 日志格式
